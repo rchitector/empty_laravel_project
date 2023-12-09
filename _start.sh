@@ -13,4 +13,6 @@ if [[ "$1" == "--project-name="* ]]; then # Парсинг параметра --
     ./vendor/bin/sail up -d
     ./vendor/bin/sail artisan migrate
     cd '..'
+else
+  echo "Ошибка: Некорректный формат для параметра --project-name."
 fi

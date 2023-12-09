@@ -10,4 +10,6 @@ if [[ "$1" == "--project-name="* ]]; then # Парсинг параметра --
     cd $project_path
     ./vendor/bin/sail down
     cd '..'
+else
+  echo "Ошибка: Некорректный формат для параметра --project-name."
 fi
