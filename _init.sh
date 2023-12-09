@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Функция для запроса подтверждения
 confirm() {
     local prompt="$1 (Y/n): "
     local default_choice="${2:-y}"
@@ -23,19 +22,23 @@ confirm() {
 }
 
 project_name=""
-services="none"
-
 if [[ "$1" == "--project-name="* ]]; then # Парсинг параметра --project-name
     project_name="${1#*=}"
-    if [ -d "$project_name" ]; then # Проверка существования папки с именем $project_name
-        echo "Предупреждение: Папка с именем $project_name уже существует."
-        exit 1
-    fi
-else
-    echo "Ошибка: Некорректный формат для параметра --project-name."
-    exit 1
 fi
+while true; do
+    if [ -z "$project_name" ]; then
+        read -p "Введите имя проекта: " project_name
+    else
+        if [ -d "$project_name" ]; then # Проверка существования папки с именем $project_name
+            echo "Предупреждение: Папка с именем $project_name уже существует."
+            project_name=""
+        else
+           break
+        fi
+    fi
+done
 
+services="none"
 if [[ "$2" == "--services="* ]]; then # Парсинг параметра --services
     services="${2#*=}"
     if [[ ! "$services" =~ ^(\"none\"|[a-zA-Z0-9,]+)$ ]]; then # Проверка, что services содержит только буквы, цифры и запятые
